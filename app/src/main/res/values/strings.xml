@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Feedio</string>
+    <string name="cont">Continue</string>
+    <string name="phoneNo">Enter Your Phone Number</string>
+    <string name="verifyOtp">Please verify OTP</string>
+    <string name="verify">Verify</string>
+    <string name="resendOtp">Resend OTP in 00:30</string>
+    <string name="searchBar">Search dishes and restaurants</string>
+    <string name="cat">Categories</string>
+    <string name="restNear">Reastaurants Near You</string>
+
+</resources>
