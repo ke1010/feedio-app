@@ -6,5 +6,6 @@ data class Restaurant(
     val address: String,
     val distanceKm : Double,
     val imgUrl : String,
-    val esTime: String
+    val esTime: String,
+    val ratings: Double
 )

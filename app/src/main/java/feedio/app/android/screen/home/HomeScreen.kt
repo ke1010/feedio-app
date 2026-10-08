@@ -23,15 +23,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import feedio.app.android.R
-import feedio.app.android.screen.home.components.CategoriesItem
-import feedio.app.android.screen.home.components.RestaurantItem
+import feedio.app.android.screen.home.component.CategoriesItem
+import feedio.app.android.screen.home.component.RestaurantItem
 import feedio.app.android.screen.home.model.Category
 import feedio.app.android.screen.home.model.Restaurant
 import feedio.app.android.ui.theme.PlusJakartaSans
 
+@Preview
 @Composable
 fun HomeScreen(modifier : Modifier = Modifier){
     var searchText by remember { mutableStateOf("") }
@@ -58,6 +60,7 @@ fun HomeScreen(modifier : Modifier = Modifier){
                 .align(Alignment.CenterHorizontally)
               .align(Alignment.CenterHorizontally)
         )
+
     }
 }
 
@@ -108,10 +111,20 @@ fun Restaurants(modifier: Modifier = Modifier, restaurant : List<Restaurant>) {
         LazyRow() {
             items(
                 items = restaurant,
-                key = {}
+                key = {restaurant -> restaurant.id}
 
             ){
                 restaurant ->
+                RestaurantItem(
+                    modifier = Modifier,
+                    name =  restaurant.name,
+                    address = restaurant.address,
+                    distanceKm = restaurant.distanceKm,
+                    imgUrl = restaurant.imgUrl,
+                    esTime = restaurant.esTime,
+                    ratings = restaurant.ratings
+
+                )
             }
 
         }

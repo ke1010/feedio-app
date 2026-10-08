@@ -1,8 +1,7 @@
-package feedio.app.android.screen.home.components
+package feedio.app.android.screen.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,14 +27,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import feedio.app.android.R
 import feedio.app.android.ui.theme.PlusJakartaSans
-import feedio.app.android.ui.theme.Teal
 
 
 @Composable
 fun RestaurantItem(modifier : Modifier = Modifier,
                    name : String,
                    address: String,
-                    imgRes: String,
+                    imgUrl: String,
                    distanceKm : Double,
                    esTime: String,
                    ratings: Double
@@ -97,7 +95,7 @@ fun RestaurantItem(modifier : Modifier = Modifier,
                 fontFamily = PlusJakartaSans,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.padding(end = 10.dp)
+                modifier = Modifier.padding(end = 5.dp)
             )
 
             Icon(
@@ -109,8 +107,10 @@ fun RestaurantItem(modifier : Modifier = Modifier,
         }
         Spacer(modifier = Modifier.height(10.dp))
 
-        Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+        Row(modifier = Modifier.fillMaxWidth()
+            .padding(bottom = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+
         ) {
             Text(
                 text = address,
@@ -147,7 +147,7 @@ fun RestaurantItemPreview() {
     RestaurantItem(
         name = "McDonald's",
         address = "123 Main St, New York",
-        imgRes = "",
+        imgUrl = "",
         distanceKm = 2.5,
         esTime = "20 mins",
         ratings = 4.5
