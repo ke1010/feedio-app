@@ -148,7 +148,6 @@ private fun ReelActionButton(
 }
 
 
-@Preview(showBackground = true)
 @Composable
 fun ReelPageItemView(){
  ReelPageItem(Modifier,

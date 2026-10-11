@@ -9,7 +9,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import feedio.app.android.screen.reel.component.ReelPageItem
 import feedio.app.android.screen.reel.model.Reel
 
-@Preview(showBackground = true)
 @Composable
 fun ReelScreen(
     reels: List<Reel> = sampleReels
@@ -18,14 +17,12 @@ fun ReelScreen(
         pageCount = { reels.size }
     )
 
-    // 2. Full-screen VerticalPager for snapping reel feeds
     VerticalPager(
         state = pagerState,
         modifier = Modifier.fillMaxSize()
     ) { page ->
         val reel = reels[page]
 
-        // 3. Render ReelPageItem per page
         ReelPageItem(
             name = reel.name,
             ratings = reel.ratings,

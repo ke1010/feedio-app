@@ -3,6 +3,7 @@ package feedio.app.android.screen.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,6 +40,8 @@ fun HomeScreen(modifier : Modifier = Modifier){
     var searchText by remember { mutableStateOf("") }
     Column(modifier.fillMaxSize()
         .background(Color.White)) {
+
+        Spacer(modifier.height(40.dp))
 
         OutlinedTextField(
             value = searchText,

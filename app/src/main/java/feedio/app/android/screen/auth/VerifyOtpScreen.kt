@@ -36,7 +36,8 @@ import feedio.app.android.ui.theme.PlusJakartaSans
 import feedio.app.android.ui.theme.Teal
 
 @Composable
-fun VerifyOtpScreen(modifier: Modifier = Modifier){
+fun VerifyOtpScreen(modifier: Modifier = Modifier,
+                    onVerifyClick: () -> Unit){
 
     Column(modifier.fillMaxSize()
         .background(Color.White)) {
@@ -58,7 +59,7 @@ fun VerifyOtpScreen(modifier: Modifier = Modifier){
         Spacer(modifier = Modifier.height(20.dp))
 
         verifyButton(
-            onClick = {},
+            onClick = {onVerifyClick()},
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 

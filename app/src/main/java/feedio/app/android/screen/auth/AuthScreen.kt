@@ -32,7 +32,8 @@ import feedio.app.android.ui.theme.PlusJakartaSans
 import feedio.app.android.ui.theme.Teal
 
 @Composable
-fun AuthScreen(modifier : Modifier = Modifier) {
+fun AuthScreen(modifier : Modifier = Modifier,
+               onSendOtpClick : (String) -> Unit) {
     var phoneNumber by remember { mutableStateOf("") }
     Column(
         modifier.fillMaxSize()
@@ -40,7 +41,7 @@ fun AuthScreen(modifier : Modifier = Modifier) {
 
 
     ) {
-        Spacer(modifier.height(20.dp))
+        Spacer(modifier.height(40.dp))
 
         Text(
             text = stringResource(id = R.string.phoneNo),
@@ -77,7 +78,7 @@ fun AuthScreen(modifier : Modifier = Modifier) {
         Spacer(modifier.height(20.dp))
 
         TextButton(
-            onClick = {},
+            onClick = {onSendOtpClick("")},
             modifier.fillMaxWidth(0.8f)
                 .align(Alignment.CenterHorizontally)
                 .height(50.dp),

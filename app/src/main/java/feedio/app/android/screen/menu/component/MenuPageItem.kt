@@ -77,7 +77,7 @@ fun MenuPageItem(modifier: Modifier,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 10.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(20.dp))
                 )
 
                 Surface(
@@ -117,7 +117,6 @@ fun MenuPageItem(modifier: Modifier,
 }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun getPreview(){
     MenuPageItem(modifier = Modifier,
