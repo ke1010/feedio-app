@@ -4,6 +4,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import feedio.app.android.R
@@ -11,10 +12,10 @@ import feedio.app.android.R
 // Set of Material typography styles to start with
 
 val PlusJakartaSans = FontFamily(
-    Font(R.font.plus_jakarta_sans_variable_font, FontWeight.Normal),
-    Font(R.font.plus_jakarta_sans_variable_font, FontWeight.Medium),
-    Font(R.font.plus_jakarta_sans_variable_font, FontWeight.SemiBold),
-    Font(R.font.plus_jakarta_sans_variable_font, FontWeight.Bold)
+    Font(R.font.plus_jakarta_sans_variable_font, weight = FontWeight.Normal, variationSettings = FontVariation.Settings(FontVariation.weight(FontWeight.Normal.weight))),
+    Font(R.font.plus_jakarta_sans_variable_font, weight = FontWeight.Medium, variationSettings = FontVariation.Settings(FontVariation.weight(FontWeight.Medium.weight))),
+    Font(R.font.plus_jakarta_sans_variable_font, weight = FontWeight.SemiBold, variationSettings = FontVariation.Settings(FontVariation.weight(FontWeight.SemiBold.weight))),
+    Font(R.font.plus_jakarta_sans_variable_font, weight = FontWeight.Bold, variationSettings = FontVariation.Settings(FontVariation.weight(FontWeight.Bold.weight)))
 )
 
 val Typography = Typography(

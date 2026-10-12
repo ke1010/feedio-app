@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ fun AuthScreen(modifier : Modifier = Modifier,
             color = Color.Black,
             fontSize = 16.sp,
             fontFamily = PlusJakartaSans,
+            fontWeight = FontWeight.SemiBold,
             modifier = modifier.padding(start = 20.dp)
         )
 

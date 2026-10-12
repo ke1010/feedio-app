@@ -83,7 +83,7 @@ fun RestaurantItem(modifier : Modifier = Modifier,
                 color = Color.Black,
                 fontFamily = PlusJakartaSans,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f)
                     .padding(start = 20.dp)
 
@@ -141,7 +141,6 @@ fun RestaurantItem(modifier : Modifier = Modifier,
 
 }
 
-@Preview(showBackground = true)
 @Composable
 fun RestaurantItemPreview() {
     RestaurantItem(

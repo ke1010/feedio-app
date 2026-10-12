@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ fun VerifyOtpScreen(modifier: Modifier = Modifier,
         Text(text = stringResource(id = R.string.verifyOtp),
             fontSize = 16.sp,
             fontFamily = PlusJakartaSans,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(start = 20.dp, top = 20.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))

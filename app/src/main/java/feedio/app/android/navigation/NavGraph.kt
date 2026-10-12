@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import feedio.app.android.screen.auth.AuthScreen
 import feedio.app.android.screen.auth.VerifyOtpScreen
-import feedio.app.android.screen.home.HomeScreen
+import feedio.app.android.screen.dashboard.DashBoardScreen
 
 @Composable
 fun NavGraph(modifier: Modifier = Modifier,
@@ -33,14 +33,14 @@ fun NavGraph(modifier: Modifier = Modifier,
 
             VerifyOtpScreen(
                 onVerifyClick = {
-                    navController.navigate(NavRoute.Home)
+                    navController.navigate(MainDashboardRoute)
                 }
                     )
                 }
 
 
-        composable< NavRoute.Home> {
-            HomeScreen()
+        composable<MainDashboardRoute> {
+            DashBoardScreen()
         }
     }
 
