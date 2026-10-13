@@ -42,7 +42,7 @@ fun AuthScreen(modifier : Modifier = Modifier,
 
 
     ) {
-        Spacer(modifier.height(40.dp))
+        Spacer(modifier.height(50.dp))
 
         Text(
             text = stringResource(id = R.string.phoneNo),
@@ -53,7 +53,7 @@ fun AuthScreen(modifier : Modifier = Modifier,
             modifier = modifier.padding(start = 20.dp)
         )
 
-        Spacer(modifier.height(10.dp))
+        Spacer(modifier.height(20.dp))
 
         OutlinedTextField(
             value = phoneNumber,

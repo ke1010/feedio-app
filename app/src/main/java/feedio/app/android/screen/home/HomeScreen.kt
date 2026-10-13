@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +34,7 @@ import feedio.app.android.screen.home.component.CategoriesItem
 import feedio.app.android.screen.home.component.RestaurantItem
 import feedio.app.android.screen.home.model.Category
 import feedio.app.android.screen.home.model.Restaurant
+import feedio.app.android.ui.theme.Back
 import feedio.app.android.ui.theme.PlusJakartaSans
 
 @Preview
@@ -40,13 +42,19 @@ import feedio.app.android.ui.theme.PlusJakartaSans
 fun HomeScreen(modifier : Modifier = Modifier){
     var searchText by remember { mutableStateOf("") }
     Column(modifier.fillMaxSize()
-        .background(Color.White)) {
+        .background(color = Back)) {
 
         Spacer(modifier.height(40.dp))
 
         OutlinedTextField(
             value = searchText,
             onValueChange = {searchText = it},
+            textStyle = TextStyle(
+                color = Color.Black,
+                fontFamily = PlusJakartaSans,
+                fontSize = 15.sp
+            ),
+            singleLine = true,
             leadingIcon = {
                 Icon(
                     painterResource(R.drawable.search_icon),
@@ -57,12 +65,11 @@ fun HomeScreen(modifier : Modifier = Modifier){
             placeholder = {
                 Text(text = stringResource(R.string.searchBar),
                     color = Color.DarkGray,
-                    fontSize = 10.sp)
+                    fontSize = 15.sp)
             },
           modifier =  Modifier.height(50.dp)
-                .fillMaxWidth(0.8f)
+                .fillMaxWidth(0.9f)
                 .align(Alignment.CenterHorizontally)
-              .align(Alignment.CenterHorizontally)
         )
 
     }

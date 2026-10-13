@@ -43,8 +43,11 @@ fun VerifyOtpScreen(modifier: Modifier = Modifier,
     Column(modifier.fillMaxSize()
         .background(Color.White)) {
 
+        Spacer(modifier.height(40.dp))
+
         Text(text = stringResource(id = R.string.verifyOtp),
             fontSize = 16.sp,
+            color = Color.Black,
             fontFamily = PlusJakartaSans,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(start = 20.dp, top = 20.dp)

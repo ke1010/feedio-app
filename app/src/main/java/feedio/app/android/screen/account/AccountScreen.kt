@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,18 +23,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import feedio.app.android.R
+import feedio.app.android.ui.theme.Back
 import feedio.app.android.ui.theme.PlusJakartaSans
+import feedio.app.android.ui.theme.Teal
 
 @Composable
 fun AccountScreen() {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
+            .background(color = Back)
             .padding(16.dp),
+
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         UserProfileHeader()
@@ -46,7 +51,8 @@ fun AccountScreen() {
 fun UserProfileHeader() {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -85,6 +91,7 @@ fun OrderHistoryCard() {
         verticalAlignment = Alignment.CenterVertically) {
         Icon(painter = painterResource(R.drawable.previous_icon),
             contentDescription = null,
+            tint = Teal,
             modifier = Modifier.padding(10.dp))
 
         Text(text = "Past Order",
@@ -102,7 +109,8 @@ fun OrderHistoryCard() {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -165,7 +173,8 @@ fun AccountsAndPreferences() {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(modifier = Modifier.padding(vertical = 8.dp)) {
             PreferenceRow(title = "Order & Invoices", subtitle = "Order history and receipts", R.drawable.invoice)
@@ -191,13 +200,14 @@ fun PreferenceRow(title: String, subtitle: String, icon: Int) {
                 .padding(end = 12.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .size(36.dp)
-                .background(color = Color.Gray),
+                .background(color = Back),
             contentAlignment = Alignment.Center,
 
         ) {
             Icon(
                 painter = painterResource(icon),
-                contentDescription = null
+                contentDescription = null,
+                tint = Color.DarkGray
             )
         }
         Column(modifier = Modifier.weight(1f)) {
@@ -228,7 +238,9 @@ fun PreferenceRow(title: String, subtitle: String, icon: Int) {
 fun LogoutButton() {
     Card(
         modifier = Modifier.fillMaxWidth(),
-    ) {
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+
+        ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -240,6 +252,7 @@ fun LogoutButton() {
 
             Icon(painter = painterResource(R.drawable.logout),
                 contentDescription = null,
+                tint = Color.Red,
                 modifier = Modifier.padding(end = 10.dp))
 
             Text(
