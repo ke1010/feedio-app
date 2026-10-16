@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import feedio.app.android.screen.auth.AuthScreen
+import feedio.app.android.screen.auth.presentation.AuthScreen
 import feedio.app.android.screen.auth.VerifyOtpScreen
 import feedio.app.android.screen.dashboard.DashBoardScreen
 

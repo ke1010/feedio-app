@@ -1,4 +1,4 @@
-package feedio.app.android.screen.auth
+package feedio.app.android.screen.auth.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,10 +15,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,14 +24,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import feedio.app.android.R
 import feedio.app.android.ui.theme.PlusJakartaSans
 import feedio.app.android.ui.theme.Teal
 
 @Composable
 fun AuthScreen(modifier : Modifier = Modifier,
+               viewModel: AuthViewModel = hiltViewModel(),
                onSendOtpClick : (String) -> Unit) {
-    var phoneNumber by remember { mutableStateOf("") }
+    val phoneNumber = viewModel.phoneNumber
+    val uiState = viewModel.uiState
     Column(
         modifier.fillMaxSize()
             .background(color = Color.White)
@@ -57,7 +56,7 @@ fun AuthScreen(modifier : Modifier = Modifier,
 
         OutlinedTextField(
             value = phoneNumber,
-            onValueChange = { phoneNumber = it },
+            onValueChange = { viewModel.onPhoneNumberEdit(it)},
             placeholder = {
                 Text(
                     text = "Phone number",
@@ -72,7 +71,8 @@ fun AuthScreen(modifier : Modifier = Modifier,
                 unfocusedBorderColor = Color.DarkGray,
                 focusedBorderColor = Teal,
                 focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White
+                unfocusedContainerColor = Color.White,
+                focusedTextColor = Color.Black
             ),
             modifier = modifier.fillMaxWidth(0.9f)
                 .align(Alignment.CenterHorizontally)
@@ -80,7 +80,7 @@ fun AuthScreen(modifier : Modifier = Modifier,
         Spacer(modifier.height(20.dp))
 
         TextButton(
-            onClick = {onSendOtpClick("")},
+            onClick = {viewModel.sendOtp()},
             modifier.fillMaxWidth(0.8f)
                 .align(Alignment.CenterHorizontally)
                 .height(50.dp),
