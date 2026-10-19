@@ -7,14 +7,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import feedio.app.android.R
+import feedio.app.android.UiState
 import feedio.app.android.ui.theme.PlusJakartaSans
 import feedio.app.android.ui.theme.Teal
 
@@ -35,8 +39,14 @@ fun AuthScreen(modifier : Modifier = Modifier,
                onSendOtpClick : (String) -> Unit) {
     val phoneNumber = viewModel.phoneNumber
     val uiState = viewModel.uiState
+    LaunchedEffect(uiState) {
+        if (uiState is UiState.Success) {
+            onSendOtpClick(phoneNumber)
+        }
+    }
     Column(
-        modifier.fillMaxSize()
+        modifier
+            .fillMaxSize()
             .background(color = Color.White)
 
 
@@ -54,9 +64,10 @@ fun AuthScreen(modifier : Modifier = Modifier,
 
         Spacer(modifier.height(20.dp))
 
+
         OutlinedTextField(
             value = phoneNumber,
-            onValueChange = { viewModel.onPhoneNumberEdit(it)},
+            onValueChange = { viewModel.onPhoneNumberEdit(it) },
             placeholder = {
                 Text(
                     text = "Phone number",
@@ -74,42 +85,63 @@ fun AuthScreen(modifier : Modifier = Modifier,
                 unfocusedContainerColor = Color.White,
                 focusedTextColor = Color.Black
             ),
-            modifier = modifier.fillMaxWidth(0.9f)
+            modifier = modifier
+                .fillMaxWidth(0.9f)
                 .align(Alignment.CenterHorizontally)
         )
-        Spacer(modifier.height(20.dp))
+
+        if(uiState is UiState.Error){
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = uiState.message ,
+                 modifier = Modifier.padding(start = 20.dp),
+                 color = Color.Red,
+                 fontSize = 14.sp,
+                 fontFamily = PlusJakartaSans)
+         }
+        Spacer(modifier = Modifier.height(20.dp))
 
         TextButton(
-            onClick = {viewModel.sendOtp()},
-            modifier.fillMaxWidth(0.8f)
+            onClick = { viewModel.sendOtp() },
+            enabled = uiState !is UiState.Loading,
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
                 .align(Alignment.CenterHorizontally)
                 .height(50.dp),
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Teal)
         ) {
-            Text(
-                text = stringResource(id=R.string.cont),
-                color = Color.White,
-                fontSize = 14.sp,
-                fontFamily = PlusJakartaSans,
-
+            if (uiState is UiState.Loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = Color.White,
+                    strokeWidth = 2.dp
                 )
+
+            }else {
+                Text(
+                    text = stringResource(id = R.string.cont),
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontFamily = PlusJakartaSans,
+
+                    )
+            }
         }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "By continuing I accept T&C",
+                fontSize = 12.sp,
+                fontFamily = PlusJakartaSans,
+                color = Color.Gray,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            )
 
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = "By continuing I accept T&C",
-            fontSize = 12.sp,
-            fontFamily = PlusJakartaSans,
-            color = Color.Gray,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
-        )
-
+        }
     }
-}
+
 
 
 

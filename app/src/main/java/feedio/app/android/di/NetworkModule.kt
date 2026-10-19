@@ -16,17 +16,23 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun getRetrofit(): Retrofit {
+    @AuthUrl
+    fun provideAuthRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(ApiUrl.BASE_URL)
+            .baseUrl("https://feedio-auth.onrender.com/v1-auth/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideAuthApiService(retrofit: Retrofit): AuthApiService {
-        return retrofit.create(AuthApiService::class.java)
+    @HomeUrl
+    fun provideHomeRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://feedio-rest.onrender.com/v1-home/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
+
 
 }

@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,14 +34,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import feedio.app.android.R
+import feedio.app.android.UiState
+import feedio.app.android.screen.auth.presentation.AuthViewModel
 import feedio.app.android.ui.theme.PlusJakartaSans
 import feedio.app.android.ui.theme.Teal
 
 @Composable
 fun VerifyOtpScreen(modifier: Modifier = Modifier,
+                    authViewModel: AuthViewModel = hiltViewModel(),
                     onVerifyClick: () -> Unit){
 
+    val uiState = authViewModel.uiState
+    LaunchedEffect(uiState) {
+        if (uiState is UiState.Success) {
+            onVerifyClick()
+        }
+    }
     Column(modifier.fillMaxSize()
         .background(Color.White)) {
 
@@ -57,14 +70,25 @@ fun VerifyOtpScreen(modifier: Modifier = Modifier,
         OtpBoxes(
             otpLength = 5,
             onOtpComplete = { fullOtp ->
+                authViewModel.onOtpChange(fullOtp)
             }
+
 
         )
 
+        if(uiState is UiState.Error){
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = uiState.message ,
+                modifier = Modifier.padding(start = 20.dp),
+                color = Color.Red,
+                fontSize = 14.sp,
+                fontFamily = PlusJakartaSans)
+       }
         Spacer(modifier = Modifier.height(20.dp))
 
         verifyButton(
-            onClick = {onVerifyClick()},
+            uiState = uiState,
+            onClick = {authViewModel.verifyOtp()},
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -124,7 +148,8 @@ fun OtpBoxes(
                     focusedBorderColor = Teal,
                     unfocusedBorderColor = Color.DarkGray,
                     focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
+                    unfocusedContainerColor = Color.White,
+                    focusedTextColor = Color.Black
 
                 ),
                 textStyle = TextStyle(
@@ -138,22 +163,33 @@ fun OtpBoxes(
 }
 
 @Composable
-fun verifyButton(onClick: () -> Unit, modifier : Modifier = Modifier){
+fun verifyButton(uiState: UiState<*>,
+    onClick: () -> Unit,
+                 modifier : Modifier = Modifier){
 
     TextButton(
         onClick = onClick,
+        enabled = uiState !is UiState.Loading,
         modifier = modifier
             .fillMaxWidth(0.8f)
             .height(50.dp),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Teal)
     ) {
-        Text(
-            text = stringResource(id = R.string.cont),
-            color = Color.White,
-            fontSize = 14.sp,
-            fontFamily = PlusJakartaSans
-        )
+        if (uiState is UiState.Loading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                color = Color.White,
+                strokeWidth = 2.dp
+            )
+        } else {
+            Text(
+                text = stringResource(id = R.string.cont),
+                color = Color.White,
+                fontSize = 14.sp,
+                fontFamily = PlusJakartaSans
+            )
+        }
     }
 
 }
