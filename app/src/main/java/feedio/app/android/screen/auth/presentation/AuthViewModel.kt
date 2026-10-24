@@ -4,13 +4,15 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import feedio.app.android.UiState
+import feedio.app.android.navigation.NavRoute
 import feedio.app.android.network.NetworkResult
 import feedio.app.android.screen.auth.data.model.VerifyOtpRequest
-import feedio.app.android.screen.auth.data.model.VerifyOtpResponse
 import feedio.app.android.screen.auth.domain.AuthRepository
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -23,12 +25,18 @@ class AuthViewModel @Inject constructor(
     var phoneNumber by mutableStateOf("")
         private set
 
+    var newOtp by mutableStateOf("")
+        private set
+
     var otp by mutableStateOf("")
         private set
 
     var uiState by mutableStateOf<UiState<Unit>>(UiState.Idle)
         private set
 
+    fun resetState() {
+        uiState = UiState.Idle
+    }
     fun onPhoneNumberEdit(newNumber : String){
      phoneNumber =newNumber
         if (uiState is UiState.Error) {
@@ -36,8 +44,8 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun onOtpChange(newOtp: String){
-        otp = newOtp
+    fun onOtpChange(updateOtp: String){
+        newOtp = updateOtp
         if(uiState is UiState.Error){
             uiState = UiState.Idle
         }
@@ -59,11 +67,10 @@ class AuthViewModel @Inject constructor(
                }
 
                 is NetworkResult.Success ->{
-                    Log.d("Success",result.data.toString() )
+                    otp = result.data.otp
                     uiState = UiState.Success(Unit)
                 }
                 is NetworkResult.Error -> {
-                    Log.d("NetworkError", result.message)
                     uiState = UiState.Error(result.message)
 
                 }
@@ -75,22 +82,24 @@ class AuthViewModel @Inject constructor(
     fun verifyOtp(){
         if(uiState is UiState.Loading)return
 
-    if(otp.isBlank() || otp.length<5){
+    if(otp.isBlank() || otp.length<6){
         uiState = UiState.Error("Please Enter Valid Otp")
         return
     }
 
         viewModelScope.launch {
-         when(val result = authRepository.verifyOtp(VerifyOtpRequest(phoneNumber, otp))){
+         when(val result = authRepository.verifyOtp(VerifyOtpRequest(phoneNumber, newOtp))){
+             is NetworkResult.Loading -> {
+                 uiState = UiState.Loading
+             }
              is NetworkResult.Success -> {
+                 Log.d("VerifyOTPSuccess",result.data.toString() )
                  uiState = UiState.Success(Unit)
              }
              is NetworkResult.Error -> {
                  uiState = UiState.Error(result.message)
              }
-             is NetworkResult.Loading -> {
-                 uiState = UiState.Loading
-             }
+
 
          }
         }

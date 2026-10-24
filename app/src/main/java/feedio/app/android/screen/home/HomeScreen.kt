@@ -2,14 +2,18 @@ package feedio.app.android.screen.home
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,30 +29,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import feedio.app.android.R
+import feedio.app.android.UiState
 import feedio.app.android.screen.home.component.CategoriesItem
 import feedio.app.android.screen.home.component.RestaurantItem
 import feedio.app.android.screen.home.model.Category
-import feedio.app.android.screen.home.model.Restaurant
+import feedio.app.android.screen.home.model.SectionDto
 import feedio.app.android.ui.theme.Back
 import feedio.app.android.ui.theme.PlusJakartaSans
+import feedio.app.android.ui.theme.Teal
 
-@Preview
 @Composable
-fun HomeScreen(modifier : Modifier = Modifier){
+fun HomeScreen(modifier : Modifier = Modifier,
+               homeViewModel : HomeViewModel = hiltViewModel()
+){
+
+    val uiState = homeViewModel.uiState
+
     var searchText by remember { mutableStateOf("") }
     Column(modifier.fillMaxSize()
-        .background(color = Back)) {
+        .background(color = Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally) {
 
         Spacer(modifier.height(40.dp))
 
         OutlinedTextField(
             value = searchText,
-            onValueChange = {searchText = it},
+            onValueChange = { searchText = it },
             textStyle = TextStyle(
                 color = Color.Black,
                 fontFamily = PlusJakartaSans,
@@ -63,81 +73,122 @@ fun HomeScreen(modifier : Modifier = Modifier){
                 )
             },
             placeholder = {
-                Text(text = stringResource(R.string.searchBar),
+                Text(
+                    text = stringResource(R.string.searchBar),
                     color = Color.DarkGray,
-                    fontSize = 15.sp)
+                    fontSize = 15.sp
+                )
             },
-          modifier =  Modifier.height(50.dp)
+            modifier = Modifier.height(50.dp)
                 .fillMaxWidth(0.9f)
-                .align(Alignment.CenterHorizontally)
         )
+        LazyColumn(modifier = Modifier
+                .fillMaxWidth()
+            .weight(1f)) {
 
-    }
-}
+            when (val state = uiState) {
+                is UiState.Loading, is UiState.Idle -> {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(250.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(color = Teal)
+                        }
+                    }
+                }
+                is UiState.Success -> {
+                    val feedData = state.data
 
+                    feedData.sectionDto.getOrNull(0)?.let { catData ->
+                        categorySection(section = catData, onCategoryClick = {})
+                    }
 
-@Composable
-fun Categories(categories: List<Category>,
-               onCategoryClick: (Category) -> Unit,
-               modifier: Modifier = Modifier){
+                    feedData.sectionDto.getOrNull(1)?.let { restData ->
+                        restaurantVerticalSection(section = restData, onRestaurantClick = {})
+                    }
+                }
 
-    Column(modifier.fillMaxWidth()) {
-    Text(text = stringResource(R.string.cat),
-        color = Color.Black,
-        fontFamily = PlusJakartaSans,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier.padding(start = 20.dp)
-    )
-
-        LazyRow(modifier.height(60.dp)) {
-          items(
-              items =  categories,
-              key = {category -> category.id}
-          ){ category ->
-              CategoriesItem(
-                  title = category.name,
-                  imageRes = category.iconRes,
-                  onClick = {onCategoryClick(category)}
-              )
-
-
-          }
-
+                is UiState.Error -> {
+                    item {
+                        Text(
+                            text = state.message,
+                            color = Color.Red,
+                            fontFamily = PlusJakartaSans,
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(20.dp)
+                        )
+                    }
+                }
+            }
         }
     }
-}
 
-@Composable
-fun Restaurants(modifier: Modifier = Modifier, restaurant : List<Restaurant>) {
+    }
 
-    Column(modifier.fillMaxWidth()) {
+
+
+fun LazyListScope.categorySection(
+    section: SectionDto,
+    onCategoryClick: (Category) -> Unit
+) {
+    item(key = "${section.id}_header") {
         Text(
-            text = stringResource(R.string.restNear),
+            text = section.title,
             color = Color.Black,
             fontFamily = PlusJakartaSans,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(start = 20.dp)
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 20.dp, bottom = 12.dp, top = 8.dp)
         )
-
-        LazyRow() {
+    }
+    item(key = "${section.id}_row") {
+        LazyRow(modifier = Modifier.height(60.dp)) {
             items(
-                items = restaurant,
-                key = {restaurant -> restaurant.id}
-
-            ){
-                restaurant ->
-                RestaurantItem(
-                    modifier = Modifier,
-                    name =  restaurant.name,
-                    address = restaurant.address,
-                    distanceKm = restaurant.distanceKm,
-                    imgUrl = restaurant.imgUrl,
-                    esTime = restaurant.esTime,
-                    ratings = restaurant.ratings
-
+                items = section.items,
+                key = { item -> "${item.id}_${item.name}" }
+            ) { category ->
+                CategoriesItem(
+                    name = category.name,
+                    imgUrl = category.imgUrl,
+                    onClick = {  }
                 )
             }
-
         }
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+
+fun LazyListScope.restaurantVerticalSection(
+    section: SectionDto,
+    onRestaurantClick: (String) -> Unit
+) {
+    item(key = "${section.id}_header") {
+        Text(
+            text = section.title,
+            color = Color.Black,
+            fontFamily = PlusJakartaSans,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 20.dp, bottom = 12.dp, top = 8.dp)
+        )
+    }
+
+    items(
+        items = section.items,
+        key = { restaurantItem -> restaurantItem.id }
+    ) { restaurantItem ->
+        RestaurantItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 6.dp),
+            name = restaurantItem.name,
+            address = restaurantItem.address,
+            distanceKm = restaurantItem.distanceKm,
+            imgUrl = restaurantItem.imgUrl,
+            esTime = restaurantItem.eta,
+            ratings = restaurantItem.ratings
+        )
     }
 }

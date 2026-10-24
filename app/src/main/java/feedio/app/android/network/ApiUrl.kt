@@ -9,4 +9,6 @@ object ApiUrl {
 
     const val HOME_FEED = "get-home-data"
 
+    const val FETCH_REEL = "get-reel/{userId}"
+
 }

@@ -4,8 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import feedio.app.android.network.ApiUrl
-import feedio.app.android.screen.auth.data.AuthApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -30,6 +28,16 @@ object NetworkModule {
     fun provideHomeRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://feedio-rest.onrender.com/v1-home/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @ReelUrl
+    fun provideReelRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://feedio-reel.onrender.com/v1-reel/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

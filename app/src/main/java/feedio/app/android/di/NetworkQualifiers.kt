@@ -7,3 +7,6 @@ import jakarta.inject.Qualifier
 
     @Qualifier
     annotation class HomeUrl
+
+   @Qualifier
+   annotation class ReelUrl

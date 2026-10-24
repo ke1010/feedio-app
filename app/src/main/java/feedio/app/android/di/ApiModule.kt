@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import feedio.app.android.screen.auth.data.AuthApiService
 import feedio.app.android.screen.home.data.HomeApiService
+import feedio.app.android.screen.reel.data.ReelApiService
 import javax.inject.Singleton
 import retrofit2.Retrofit
 
@@ -23,6 +24,14 @@ import retrofit2.Retrofit
          @Singleton
         fun provideHomeApiService(@HomeUrl retrofit: Retrofit): HomeApiService {
             return retrofit.create(HomeApiService::class.java)
+
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideReelApiService(@ReelUrl retrofit: Retrofit): ReelApiService {
+        return retrofit.create(ReelApiService::class.java)
 
     }
 }

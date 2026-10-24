@@ -1,4 +1,4 @@
-package feedio.app.android.screen.auth
+package feedio.app.android.screen.auth.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,10 +35,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import feedio.app.android.R
 import feedio.app.android.UiState
-import feedio.app.android.screen.auth.presentation.AuthViewModel
 import feedio.app.android.ui.theme.PlusJakartaSans
 import feedio.app.android.ui.theme.Teal
 
@@ -48,6 +46,8 @@ fun VerifyOtpScreen(modifier: Modifier = Modifier,
                     onVerifyClick: () -> Unit){
 
     val uiState = authViewModel.uiState
+
+
     LaunchedEffect(uiState) {
         if (uiState is UiState.Success) {
             onVerifyClick()
@@ -68,7 +68,7 @@ fun VerifyOtpScreen(modifier: Modifier = Modifier,
         Spacer(modifier = Modifier.height(20.dp))
 
         OtpBoxes(
-            otpLength = 5,
+            otpLength = 6,
             onOtpComplete = { fullOtp ->
                 authViewModel.onOtpChange(fullOtp)
             }
@@ -86,9 +86,11 @@ fun VerifyOtpScreen(modifier: Modifier = Modifier,
        }
         Spacer(modifier = Modifier.height(20.dp))
 
-        verifyButton(
+        VerifyButton(
             uiState = uiState,
-            onClick = {authViewModel.verifyOtp()},
+            onClick = {
+                authViewModel.verifyOtp()
+            },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -102,18 +104,27 @@ fun VerifyOtpScreen(modifier: Modifier = Modifier,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            text = "OTP - " + authViewModel.otp,
+            fontSize = 14.sp,
+            color = Color.Gray,
+            fontFamily = PlusJakartaSans,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
 
     }
 }
 
 @Composable
 fun OtpBoxes(
-    otpLength: Int = 5,
+    otpLength: Int = 6,
     onOtpComplete: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val otpValues = remember { mutableStateListOf(*Array(otpLength) { "" }) }
-
     val focusRequesters = remember { List(otpLength) { FocusRequester() } }
 
     Row(
@@ -149,7 +160,8 @@ fun OtpBoxes(
                     unfocusedBorderColor = Color.DarkGray,
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
-                    focusedTextColor = Color.Black
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
 
                 ),
                 textStyle = TextStyle(
@@ -163,7 +175,7 @@ fun OtpBoxes(
 }
 
 @Composable
-fun verifyButton(uiState: UiState<*>,
+fun VerifyButton(uiState: UiState<*>,
     onClick: () -> Unit,
                  modifier : Modifier = Modifier){
 

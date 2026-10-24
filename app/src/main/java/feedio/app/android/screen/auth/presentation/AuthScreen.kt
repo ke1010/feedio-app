@@ -36,12 +36,12 @@ import feedio.app.android.ui.theme.Teal
 @Composable
 fun AuthScreen(modifier : Modifier = Modifier,
                viewModel: AuthViewModel = hiltViewModel(),
-               onSendOtpClick : (String) -> Unit) {
+               onSendOtpClick : () -> Unit) {
     val phoneNumber = viewModel.phoneNumber
     val uiState = viewModel.uiState
     LaunchedEffect(uiState) {
         if (uiState is UiState.Success) {
-            onSendOtpClick(phoneNumber)
+            onSendOtpClick()
         }
     }
     Column(
@@ -102,7 +102,6 @@ fun AuthScreen(modifier : Modifier = Modifier,
 
         TextButton(
             onClick = { viewModel.sendOtp() },
-            enabled = uiState !is UiState.Loading,
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .align(Alignment.CenterHorizontally)

@@ -41,6 +41,7 @@ android {
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
@@ -66,4 +67,10 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+    //coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    //exoplayer
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
 }

@@ -29,45 +29,36 @@ import androidx.compose.ui.unit.sp
 import feedio.app.android.R
 import feedio.app.android.ui.theme.PlusJakartaSans
 import feedio.app.android.ui.theme.Teal
+import feedio.app.android.util.VideoPlayer
 
 @Composable
 fun ReelPageItem(modifier: Modifier = Modifier,
-                 name : String,
-                 ratings: Double,
-                 likes : String,
-                 cmnts : String,
+                 videoUrl : String,
+                 likes : Int,
+                 cmnts : Int,
                  caption : String) {
     Box(modifier = modifier.fillMaxSize()) {
-
-        // 1. Bottom Scrim Gradient
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(280.dp)
-                .align(Alignment.BottomCenter)
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.85f))
-                    )
-                )
+        VideoPlayer(
+            videoUrl = videoUrl,
+            modifier = Modifier.fillMaxSize()
         )
 
         Column(
             modifier = Modifier
                 .align(Alignment.BottomEnd) // Independent Box Alignment
-                .padding(end = 16.dp, bottom = 140.dp), // Lifted up for ergonomic thumb reach
+                .padding(end = 16.dp, bottom = 140.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             ReelActionButton(
                 iconRes = R.drawable.heart_icon,
-                label = likes,
+                label = likes.toString(),
                 onClick = {}
             )
 
             ReelActionButton(
                 iconRes = R.drawable.cmnt_icon,
-                label = cmnts,
+                label = cmnts.toString(),
                 onClick = {}
             )
         }
@@ -79,7 +70,7 @@ fun ReelPageItem(modifier: Modifier = Modifier,
                 .padding(start = 16.dp, bottom = 24.dp)
         ) {
             Text(
-                text = "$name  ★ $ratings",
+                text = "Feddio",
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
@@ -144,12 +135,4 @@ private fun ReelActionButton(
     }
 }
 
-@Composable
-fun ReelPageItemView(){
- ReelPageItem(Modifier,
-     "The Burger Joint",
-     4.5,
-     "127",
-     "32",
-     "Looks trippicious")
-}
+
